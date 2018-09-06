@@ -49,31 +49,37 @@ class Slider extends Component {
 
   };
 
+  renderSlides = () => (
+    this.props.images.map((image, index) =>
+    <Slide
+      key={index}
+      index={index}
+      activeSlide={this.state.activeSlide}
+      image={image}
+    />)
+  );
+
+  renderIndicatorDots = () => (
+    this.props.images.map((image, index) =>
+      <SliderDots
+        key={index}
+        index={index}
+        activeSlide={this.state.activeSlide}
+        isActive={this.state.activeSlide === index}
+        getSlide={() => this.getSlide(index)}
+      />)
+  );
+
   render() {
-    const { images } = this.props;
     return(
       <div className="sliderContent">
-        <PreviousArrow prevSlide={e => this.getPrevSlide(e)}/>
+        <PreviousArrow prevSlide={this.getPrevSlide}/>
         <ul className="slidesContent">
-          {images.map((image, index) =>
-              <Slide
-                key={index}
-                index={index}
-                activeSlide={this.state.activeSlide}
-                image={image}
-              />)}
+          {this.renderSlides()}
         </ul>
-        <NextArrow nextSlide={e => this.getNextSlide(e)}/>
+        <NextArrow nextSlide={this.getNextSlide}/>
         <ul className="dotWrapper">
-          {images.map((image, index) =>
-            <SliderDots
-              key={index}
-              index={index}
-              activeSlide={this.state.activeSlide}
-              isActive={this.state.activeSlide === index}
-              getSlide={e => this.getSlide(index)}
-            />
-          )}
+          {this.renderIndicatorDots()}
         </ul>
       </div>
     )
